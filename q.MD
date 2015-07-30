@@ -16,11 +16,12 @@
 - private IP와 public IP 간 주소를 변환해 주는 기술
 - public IP vs private IP
 - 3 mode
-    mode|desc
-    ----|----
-    static|public IP를 private IP와 각각 정적으로 할당
-    pooled|사용 가능한 public IP 들을 pool로 관리해서 동적으로 할당 
-    PAT|public IP가 1개 일 때 , port forwarding 기술 사용
+
+mode|desc
+----|----
+static|public IP를 private IP와 각각 정적으로 할당
+pooled|사용 가능한 public IP 들을 pool로 관리해서 동적으로 할당 
+PAT|public IP가 1개 일 때 , port forwarding 기술 사용
 
 ### DHCP 
 ###### IP address
@@ -107,8 +108,7 @@ http://www.quora.com/What-is-the-role-of-OSI-layers-when-we-open-a-webpage
 http://www.quora.com/What-is-the-difference-between-TCP-and-UDP
 - TCP
 	- TCP can be thought of like having a telephone conversation
-	- It has a similar establishment protocol, three-way-handshake. A client will send a SYN message to a server who is listening for these message. The server, if it decides to accept the request, will send back a SYN/ACK message, both acknowledgeing the previous request and requesting its own return channel fo communication.
-	- 
+	- It has a similar establishment protocol, three-way-handshake. A client will send a SYN message to a server who is listening for these message. The server, if it decides to accept the request, will send back a SYN/ACK message, both acknowledgeing the previous request and requesting its own return channel fo communication
 - UDP
 
 ###### TCP 3 way handshaking
@@ -127,7 +127,7 @@ http://www.quora.com/What-is-the-difference-between-TCP-and-UDP
 
 ### Common Ports
 Port|Apps
--|-
+----|----
 53|DNS
 110|POP3
 
