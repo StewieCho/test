@@ -16,11 +16,11 @@
 - private IP와 public IP 간 주소를 변환해 주는 기술
 - public IP vs private IP
 - 3 mode
-    |mode|desc|
-    |-|-|
-    |static|public IP를 private IP와 각각 정적으로 할당|
-    |pooled|사용 가능한 public IP 들을 pool로 관리해서 동적으로 할당 |
-    |PAT|public IP가 1개 일 때 , port forwarding 기술 사용|
+    mode|desc
+    ----|----
+    static|public IP를 private IP와 각각 정적으로 할당
+    pooled|사용 가능한 public IP 들을 pool로 관리해서 동적으로 할당 
+    PAT|public IP가 1개 일 때 , port forwarding 기술 사용
 
 ### DHCP 
 ###### IP address
@@ -40,19 +40,19 @@ static routing은 관리자가 지정한 라우팅 경로에 의해서만 라우
 - 상대적으로 느리나 가변적인 네트워크 환경에서 사용하기 좋다.
 
 ### HTTP
-|code|result|
-|-|-|
-|1XX|informational|
-|2XX|Successful|
-|200|OK|
-|204|No Content|
-|3XX|Redirection|
-|4XX|Client Error|
-|400|Bad Request|
-|401|Unauthorized(The request requires user authentication)|
-|403|Forbidden(Authorization)|
-|404|Not Found|
-|500|Internal Server Error|
+code|result
+----|------
+1XX|informational
+2XX|Successful
+200|OK
+204|No Content
+3XX|Redirection
+4XX|Client Error
+400|Bad Request
+401|Unauthorized(The request requires user authentication)
+403|Forbidden(Authorization)
+404|Not Found
+500|Internal Server Error
 
 #### when enter www.amazon.com in browser, what will happen?
 http://www.quora.com/What-is-the-role-of-OSI-layers-when-we-open-a-webpage
@@ -126,25 +126,25 @@ http://www.quora.com/What-is-the-difference-between-TCP-and-UDP
 #### netstat
 
 ### Common Ports
-|Port|Apps|
-|-|-|
-|53|DNS|
-|110|POP3|
+Port|Apps
+-|-
+53|DNS
+110|POP3
 
 ### Directory Structure
-|Directory|Desc|
-|-|-|
-|/bin|Common programs, shared by the system|
-|/dev|Contains references to all the CPU peripheral hardware|
-|/etc|Most important system configuration files are in /etc|
-|/home|Home directories of the common users|
-|/lib|Library files, includes files for all kinds of programs needed by the system and the users|
-|/mnt|Standard mount point for external file systems, e.g. a CD-ROM or a digital camera.|
-|/opt|Typically contains extra and third party software.|
-|/proc|A virtual file system containing information about system resources|
-|/sbin|Programs for use by the system and the system administrator|
-|/usr|Programs, libraries, documentation etc. for all user-related programs|
-|/var|Storage for all variable files and temporary files created by users, such as log files, the mail queue|
+Directory|Desc
+---------|----
+/bin|Common programs, shared by the system
+/dev|Contains references to all the CPU peripheral hardware
+/etc|Most important system configuration files are in /etc
+/home|Home directories of the common users
+/lib|Library files, includes files for all kinds of programs needed by the system and the users
+/mnt|Standard mount point for external file systems, e.g. a CD-ROM or a digital camera.
+/opt|Typically contains extra and third party software.
+/proc|A virtual file system containing information about system resources
+/sbin|Programs for use by the system and the system administrator
+/usr|Programs, libraries, documentation etc. for all user-related programs
+/var|Storage for all variable files and temporary files created by users, such as log files, the mail queue
 
 ### linux file system
 
