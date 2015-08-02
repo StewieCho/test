@@ -24,10 +24,51 @@ pooled|사용 가능한 public IP 들을 pool로 관리해서 동적으로 할�
 PAT|public IP가 1개 일 때 , port forwarding 기술 사용
 
 ### DHCP 
+dynamic host configuration protocol
+dynamically assign the ip address to the client computer or network devices
+DHCP server will provid certain TCP/IP information 
+
+###### from DHCP it's going to get those 3 information
+- Ip address
+	- this is given dynamically
+	- scope (Ex 192.168.1.100 ~ 192.168.1.200)
+- subnet masking (static)
+- default gateway (static) (can talk outside of network)
+
+- reservation
+- lease
+	- lease it the client with the particular time
+
+###### 4 step
+- DHCP discovery
+- DHCP offer
+- DHCP request
+- DHCP ack
+
+broadcast the request to anyone to ask where is DHCP server
+-> DHCP server offers 
+
 ###### IP address
 - ip, gateway, subnet mask
 
-#### DNS
+### DNS
+domain name service maps domain name to IP
+dynamically write the host name in IP address into DNS table
+#### reverse DNS
+opposite. maps ip adress to domain name
+query to find the hostname
+
+#### etc
+your computer doesn't understand what cnn.com is.
+cnn.com will return web page
+this is basically how dns going to work for you
+that will go to your local dns server
+your local dns server also has dns server information
+it has it's own record, but if it cant find, 
+
+first look up in your dns server, and then primary dns server, finally the secondary dns server
+that will go query
+
 
 ### ICMP (internet control message protocol)
 #### ping
@@ -58,9 +99,66 @@ code|result
 #### when enter www.amazon.com in browser, what will happen?
 http://www.quora.com/What-is-the-role-of-OSI-layers-when-we-open-a-webpage
 
-#### router operation concept
+### Router vs Switch
+#### switch (Layer 2)
+- layer 2 (data link)
+- mac address (aka hardware address)
+	- manufacturer no + social security no
+- end to end
+- 4 func.
+	- flooding (broadcasting out to know where the destination is)
+	- forwarding (send packet to the destination)
+	- learning (which port is which pc **mac** )
+	- filtering (after estblishing mac table, it do not broadcast packets)
+it resides in OSI layer 2
 
-#### public key / private key encryption
+
+#### router (layer 3)
+- layer 3 (network)
+- ip address 
+- network to network
+
+> layer 3 switch, router are different in the actual implementation. router is implemented in software, whereas a layer-3 switch perform the same operation using dedicated ASIC hardware.
+	
+
+### Cryptography (Encryption) with SSL
+#### Asymmetric cryptosystems
+use the same key for decoding and encoding
+cipher
+
+#### Symmetric cryptosystems
+use the different key for decoding and encoding
+##### public-key cryptography
+both keys can decode & encode.
+In EC2 SSH, the user has the private key. EC2 only has public key.
+In public-key authentication, the client gives the public key to the server. and put that file in UserHome/.ssh authorized_keys (permission 600)
+###### RSA
+#### SSL
+###### Digital Certificates
+
+open called "certs"
+It contains basic things common
+
+- Subject's name
+- Expiration date
+- Certificate issuer
+- Digital signature from the certificate issuer
+- the public key of the subject
+	- 비공개키의 소유자는 비공개키를 이용해서 정보를 암호화 한 후에 공개키와 함께 암호화된 정보를 전송한다. 정보와 공개키를 획득한 사람은 공개키를 이용해서 암호화된 정보를 복호화 한다. 이 과정에서 공개키가 유출된다면 의도하지 않은 공격자에 의해서 데이터가 복호화 될 위험이 있다. 이런 위험에도 불구하고 비공개키를 이용해서 암호화를 하는 이유는 무엇일까? 그것은 이것이 데이터를 보호하는 것이 목적이 아니기 때문이다. 암호화된 데이터를 공개키를 가지고 복호화 할 수 있다는 것은 그 데이터가 공개키와 쌍을 이루는 비공개키에 의해서 암호화 되었다는 것을 의미한다. 즉 공개키가 데이터를 제공한 사람의 신원을 보장해주게 되는 것이다. 이러한 것을 전자 서명이라고 부른다
+- CA (certificate authority) or Root Certificate
+	- service provider need to buy certs from CA
+- SSL certs has following information below
+	- service information
+	- service public key + public key encryption
+- SSL certs is encrypted by CA private key which is only decrypted by CA public key
+- Browser already knows CA list + CA's public key
+
+http://security.stackexchange.com/questions/7360/why-cant-the-ssl-handshake-be-done-in-one-step?rq=1
+https://opentutorials.org/course/228/4894
+
+	
+
+
 
 #### OSI Layer 7
 1. physical
@@ -106,6 +204,8 @@ http://www.quora.com/What-is-the-role-of-OSI-layers-when-we-open-a-webpage
 
 #### TCP / UDP
 http://www.quora.com/What-is-the-difference-between-TCP-and-UDP
+stateful
+
 - TCP
 	- TCP can be thought of like having a telephone conversation
 	- It has a similar establishment protocol, three-way-handshake. A client will send a SYN message to a server who is listening for these message. The server, if it decides to accept the request, will send back a SYN/ACK message, both acknowledgeing the previous request and requesting its own return channel fo communication
@@ -115,13 +215,25 @@ http://www.quora.com/What-is-the-difference-between-TCP-and-UDP
 ###### TCP flags
 ###### TCP sequence
 
-#### SSL
 
 ## OS (Linux)
 
 ### Application
 #### iptables
-- channel
+https://www.frozentux.net/iptables-tutorial/iptables-tutorial.html
+iptables works inside internet & transport layers
+
+##### channel
+- input
+	- all **incoming** packets are checked against the rules in this chain
+- output
+	- all **outcoming** packets are checked against the rules in this chain
+	- emitted by the host. their destination is usually another host, but can be the same host via the loopback interface, so not all packets that go through OUTPUT are in fact outgoing
+- forward
+	- all packet being sent to another computer are checked against the rules in the chain
+	- the packets that the host is merely routing
+
+
 
 #### netstat
 
