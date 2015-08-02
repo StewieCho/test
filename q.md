@@ -9,7 +9,27 @@
 
 ### Network basic
 #### Default Gateway
+the router for the subnetwork you're on
+looking for target in local network, if it is not there, then ask the default gatewar to find target (maybe outside)
+
 #### Subnet Mask
+the way to segment network logically
+it tells what part of IP adress is the network identifier or device identifier
+class A subnet - 255.0.0.0
+class B subnet - 255.255.0.0
+class C subnet - 255.255.255.0
+
+192.168.1.X
+255.255.255.0
+network part - 192.168.1
+device part - 1
+
+if you wanna devide that into two network, 255.255.255.128 etc
+
+there is switch, and 2 different network connected physical. network A do not connect to network B unless there is router.
+
+**router connects different subnet**
+
 
 ### NAT
 - Network Address Translation
@@ -22,6 +42,11 @@ mode|desc
 static|public IP를 private IP와 각각 정적으로 할당
 pooled|사용 가능한 public IP 들을 pool로 관리해서 동적으로 할당 
 PAT|public IP가 1개 일 때 , port forwarding 기술 사용
+
+internal network have IP address range 192.168.1.0 - 255
+what is your external IP address
+router has NAT built into it.
+default gateway is usally router
 
 ### DHCP 
 dynamic host configuration protocol
@@ -48,9 +73,6 @@ DHCP server will provid certain TCP/IP information
 broadcast the request to anyone to ask where is DHCP server
 -> DHCP server offers 
 
-###### IP address
-- ip, gateway, subnet mask
-
 ### DNS
 domain name service maps domain name to IP
 dynamically write the host name in IP address into DNS table
@@ -70,16 +92,10 @@ first look up in your dns server, and then primary dns server, finally the secon
 that will go query
 
 
-### ICMP (internet control message protocol)
+### ICMP (internet control message protocol) ![](http://a2.mzstatic.com/us/r30/Purple1/v4/11/cb/b4/11cbb408-4352-013b-9849-f57209330153/icon256.png)
+
 #### ping
 #### tracert
-
-### routing
-#### static
-static routing은 관리자가 지정한 라우팅 경로에 의해서만 라우팅이 이루어짐
-#### dynamic
-- dynamic routing은 RIP, OSPF, BGP를 이용해서 서로 정보를 교환하여 동적인 라우팅 테이블을 생성
-- 상대적으로 느리나 가변적인 네트워크 환경에서 사용하기 좋다.
 
 ### HTTP
 code|result
@@ -198,11 +214,8 @@ https://opentutorials.org/course/228/4894
 3. transport
 4. application services
 
+#### TCP / UDP ![](http://a2.mzstatic.com/us/r30/Purple1/v4/11/cb/b4/11cbb408-4352-013b-9849-f57209330153/icon256.png)
 
-#### Active Directories
-
-
-#### TCP / UDP
 http://www.quora.com/What-is-the-difference-between-TCP-and-UDP
 stateful
 
@@ -214,6 +227,18 @@ stateful
 ###### TCP 3 way handshaking
 ###### TCP flags
 ###### TCP sequence
+
+### VPN
+
+- tons of routers are sitting on the internet. you go throught any number of router
+- virtual private networking allows you to connect target over the internet securily
+- set up the tunnel between source and target
+- inside tunnel all information is encrypted
+- if there is hacker attack, the previous tunnel is corrupted, and rebuild new tunnel
+- VPN is client server technology
+- put IP adress with username, password
+- you're not on LAN
+- put the whole protocol into data area, so that it does not have to think of data converting  **Tunneling**
 
 
 ## OS (Linux)
@@ -294,9 +319,24 @@ Directory|Desc
 #### NTFS
 
 ### Raid
-Raid 0 : 데이터를 물리적으로 나눔 (sharding) 속도는 좋으나 안정성 떨어짐
-Raid 1 : Mirroring, 백업용으로 디스크를 하나 더 두는 컨셉
-Raid 3 : 데이터 오류 체크 기술로 Raid 0 의 안정성 보완
+
+|Raid|Desc|
+|----|----|
+|0|Striping(sharding)<br>|
+|1|Mirroring|
+|2||
+|3|byte-level striping with dedicated parity. <br>One disk for parity|
+|4|block-level striping with dedicated parity .<br> One disk for parity|
+|5|block-level striping with distributed parity|
+
+- **RAID 0** Striping
+- **RAID 1** Mirroring
+- **RAID 3** byte-level parity is in dedicated parity. not commonly used in practice
+- **RAID 4** block-level parity is in dedicated parity. 
+- **RAID 5** parity information is distributed among the drives. Raid 5 need at least **3** disks.
+
+- **RAID 0+1** creates a second striped set to mirror a primary striped set. The array continues to operate with one or more drives failed in the same mirror set, but if drives fail on both sides of the mirror the data on the RAID system is lost.
+- **RAID 1+0** creates a striped set from a series of mirrored drives. The array can sustain multiple drive losses so long as no mirror loses all its drive
 
 ### Inodes
 파일에 대한 index nodes
@@ -324,7 +364,17 @@ Raid 3 : 데이터 오류 체크 기술로 Raid 0 의 안정성 보완
 - 하나를 삭제 하면 링크 갯수만 하나 감소
 - . 와 .. 은 디렉토리 엔트리에 대한 하드링크
 
-### LDAP
+### LDAP ![](http://a2.mzstatic.com/us/r30/Purple1/v4/11/cb/b4/11cbb408-4352-013b-9849-f57209330153/icon256.png)
+
+
+
+### IPSEC
+- ip network encryption protocol
+- sa : security association
+- **transport mode** encrypt all
+- **tunnel mode** encrypt IP Packet's data section
+
+### Active Directory Service ![](http://a2.mzstatic.com/us/r30/Purple1/v4/11/cb/b4/11cbb408-4352-013b-9849-f57209330153/icon256.png)
 
 ## Case
 
