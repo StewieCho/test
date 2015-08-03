@@ -3,7 +3,6 @@
 # Network & OS
 > summary of questions
 
-[TOC]
 
 ## Network
 
@@ -15,6 +14,7 @@ looking for target in local network, if it is not there, then ask the default ga
 #### Subnet Mask
 the way to segment network logically
 it tells what part of IP adress is the network identifier or device identifier
+```
 class A subnet - 255.0.0.0
 class B subnet - 255.255.0.0
 class C subnet - 255.255.255.0
@@ -23,6 +23,7 @@ class C subnet - 255.255.255.0
 255.255.255.0
 network part - 192.168.1
 device part - 1
+```
 
 if you wanna devide that into two network, 255.255.255.128 etc
 
@@ -169,14 +170,12 @@ It contains basic things common
 - SSL certs is encrypted by CA private key which is only decrypted by CA public key
 - Browser already knows CA list + CA's public key
 
+
 http://security.stackexchange.com/questions/7360/why-cant-the-ssl-handshake-be-done-in-one-step?rq=1
 https://opentutorials.org/course/228/4894
 
-	
 
-
-
-#### OSI Layer 7
+### OSI Layer 7
 1. physical
 	- physical connection between devices:  a cable or a rado signal
 	- **Ethernet**
@@ -184,9 +183,13 @@ https://opentutorials.org/course/228/4894
 	- at this layer, data packets are encoded and decoded into bits
 	- devided into tho sub layers: MAC layer and LLC(Logical Link Control) layer
 	- MAC layer controls how a computer on the network gains access to the data and permission to transmit it. LLC layer controls frame synchronization, flow control and error checking
-	- **PPP, ATM, IEEE 802.5/802.2**
+	- MAC address has 48 bits (FF-FF-FF-FF-FF-FF)
+	- it can be segmented by VLAN (usually static VLAN)
+	- map each port to which VLAN number (1,2,3,4~~)
+	- to communicate with nodes in different VLAN, it needs L3 switch or router
+	- **PPP, ATM, IEEE 802.5/802.2, IEEE802.3(이더넷)**
 3. network
-	- transmitting data between devices on different networks
+	- transmitting data between devices on ==different networks==
 	- this layer provides switching and routing for transmitting data from node to node
 	- routing, forwarding, addressing, internetworking, packet sequencing  are functions of this layer
 	- **IP**
@@ -208,16 +211,40 @@ https://opentutorials.org/course/228/4894
 	- this layer provides application services for transfers, email, and network software services.
 	- **HTTP, FTP**
 
-#### TCP/IP network model
+### ARP
+- address resolution protocol
+- in network, only 2 addresses exist, one is MAC address, another is IP address.
+
+|physical|logical|
+|--------|-------|
+|MAC address|IP address|
+|NIC(network interface card)|OS|
+
+Data link packet
+
+|Preemble|Target MAC address|Source MAC address|type|Data|FCS|
+|--------|------------------|------------------|----|----|---|
+|8 byte|6 byte|6 byte|2 byte|46 ~ 1500 byte|4 byte|
+
+#### Process
+- broadcast the request to find the mac address with target IP
+- target device responses MAC address to the client
+- register IP-MAC adress mapping in ARP table
+- unicast the target with MAC address
+
+
+
+### TCP/IP network model
 1. network interface
 2. internet
 3. transport
 4. application services
 
-#### TCP / UDP ![](http://a2.mzstatic.com/us/r30/Purple1/v4/11/cb/b4/11cbb408-4352-013b-9849-f57209330153/icon256.png)
+### TCP / UDP ![](http://a2.mzstatic.com/us/r30/Purple1/v4/11/cb/b4/11cbb408-4352-013b-9849-f57209330153/icon256.png)
 
 http://www.quora.com/What-is-the-difference-between-TCP-and-UDP
 stateful
+- TCP
 
 - TCP
 	- TCP can be thought of like having a telephone conversation
