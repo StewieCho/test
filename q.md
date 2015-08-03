@@ -455,20 +455,21 @@ Directory|Desc
 - . 와 .. 은 디렉토리 엔트리에 대한 하드링크
 
 ### LDAP ![](http://a2.mzstatic.com/us/r30/Purple1/v4/11/cb/b4/11cbb408-4352-013b-9849-f57209330153/icon256.png)
+- LDAP (Lightweight Directory Access Protocol) is an application protocol for querying and modifying items in directory service providers like Active Directory, which supports a form of LDAP.
 
-
-
+### Active Directory Service ![](http://a2.mzstatic.com/us/r30/Purple1/v4/11/cb/b4/11cbb408-4352-013b-9849-f57209330153/icon256.png)
+- Active Directory is a database based system that provides authentication, directory, policy, and other services in a Windows environment
+- Short answer: AD is a directory services database, and LDAP is one of the protocols you can use to talk to it.
+- 
 ### IPSEC
 - ip network encryption protocol
 - sa : security association
 - **transport mode** encrypt all
 - **tunnel mode** encrypt IP Packet's data section
 
-### Active Directory Service ![](http://a2.mzstatic.com/us/r30/Purple1/v4/11/cb/b4/11cbb408-4352-013b-9849-f57209330153/icon256.png)
-
 ## Case
 
 - receive a 200 response code when navigating to the domain, but the page wont load, how do you troubleshoot?
 - how to handle problems CPU 100%
 - a client has a problem with his computer and he tells you that his IP is X.X.X.X. Diagnose the issue
-- what if domain name could be resolved in any name servers
+- what if domain name could not be resolved in any name servers
