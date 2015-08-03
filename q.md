@@ -31,6 +31,51 @@ there is switch, and 2 different network connected physical. network A do not co
 
 **router connects different subnet**
 
+### OSI Layer 7
+1. physical
+	- physical connection between devices:  a cable or a rado signal
+	- **Ethernet**
+2. data link
+	- data unit : **frame**
+	- at this layer, data packets are encoded and decoded into bits
+	- devided into tho sub layers: MAC layer and LLC(Logical Link Control) layer
+	- MAC layer controls how a computer on the network gains access to the data and permission to transmit it. LLC layer controls frame synchronization, flow control and error checking
+	- MAC address has 48 bits (FF-FF-FF-FF-FF-FF)
+	- it can be segmented by VLAN (usually static VLAN)
+	- map each port to which VLAN number (1,2,3,4~~)
+	- to communicate with nodes in different VLAN, it needs L3 switch or router
+	- **PPP, ATM, IEEE 802.5/802.2, IEEE802.3(이더넷)**
+3. network
+	- data unit : **packet**
+	- transmitting data between devices on **different networks**
+	- this layer provides switching and routing for transmitting data from node to node
+	- routing, forwarding, addressing, internetworking, packet sequencing  are functions of this layer
+	- **network address** : 192.168.1.1 (255.255.255.0) => 192.168.1.0
+	- broadcast address (local broadcast address) : 192.168.1.1 (255.255.255.0) => 192.168.1.255 , is used to broadcast all node in same network
+	- broadcast address (limited broadcast address) : 255.255.255.255 , is used to broadcast all node in same network if client does not know its own IP address (ex: DHCP)
+	- loop-back address : 127.0.0.1/32 (1 octet is 127, rest of them do care)
+	- source, target MAC address in IP packet changes in every network
+	- **IP**
+4. transport
+	- data unit : **segment**
+	- use **port** to know about application process
+	- this layer provides transparent transfer of data between end systems, or hosts
+	- is responsible for end-to-end error recovery and flow control
+	- **TCP, UDP**
+5. session
+	- this layer establishes, manages and terminates connection between applications
+	- it deals with session and connection coordination
+	- **NFS, RPC, SQL**
+6. presentation
+	- the presentation layer works to transform data into the form that the application can accept
+	- this layer formats and encrypts data to be sent across a network
+	- **encrytion, ASCII, GIF, JPEG**
+7. application
+	- this layer supports application and end-user processes.
+	- everything at this layer is application-specific
+	- this layer provides application services for transfers, email, and network software services.
+	- **HTTP, FTP**
+
 
 ### NAT
 - Network Address Translation
@@ -54,7 +99,7 @@ dynamic host configuration protocol
 dynamically assign the ip address to the client computer or network devices
 DHCP server will provid certain TCP/IP information 
 
-###### from DHCP it's going to get those 3 information
+#### from DHCP it's going to get those 3 information
 - Ip address
 	- this is given dynamically
 	- scope (Ex 192.168.1.100 ~ 192.168.1.200)
@@ -65,11 +110,14 @@ DHCP server will provid certain TCP/IP information
 - lease
 	- lease it the client with the particular time
 
-###### 4 step
+#### 4 step
 - DHCP discovery
 - DHCP offer
 - DHCP request
 - DHCP ack
+
+#### Relay agent
+It is not goot to have each DHCP server in every VLAN, so relay agent (usually L3 switch or router) send DHCP request to DHCP in different VLAN instead.
 
 broadcast the request to anyone to ask where is DHCP server
 -> DHCP server offers 
@@ -93,12 +141,33 @@ first look up in your dns server, and then primary dns server, finally the secon
 that will go query
 
 
-### ICMP (internet control message protocol) ![](http://a2.mzstatic.com/us/r30/Purple1/v4/11/cb/b4/11cbb408-4352-013b-9849-f57209330153/icon256.png)
+### ICMP (internet control message protocol)
 
 #### ping
-#### tracert
+- packet internet grouper
+- it's beyond TCP/UDP. just IP header + ICMP message
+- **type** : request or reply
+- **code** : (ex) message of the event
+- codes
+	- Request Timeout
+	- Destination Unreachable
 
 ### HTTP
+#### HTTP 1.0 / 1.1
+- **HTTP 1.0** : every request make connection
+- **HTTP 1.1** : reuse connection
+
+#### HTTP message
+##### Header
+- **Connection: Keep-Alive**
+- **Accept-Encoding, Content-Encoding**
+- **Content-type**
+- **User-Agent**
+- **Cookie**
+
+##### Body
+
+#### Response Code
 code|result
 ----|------
 1XX|informational
@@ -139,11 +208,11 @@ it resides in OSI layer 2
 	
 
 ### Cryptography (Encryption) with SSL
-#### Asymmetric cryptosystems
+#### Symmetric cryptosystems
 use the same key for decoding and encoding
 cipher
 
-#### Symmetric cryptosystems
+#### Asymmetric cryptosystems
 use the different key for decoding and encoding
 ##### public-key cryptography
 both keys can decode & encode.
@@ -175,42 +244,6 @@ http://security.stackexchange.com/questions/7360/why-cant-the-ssl-handshake-be-d
 https://opentutorials.org/course/228/4894
 
 
-### OSI Layer 7
-1. physical
-	- physical connection between devices:  a cable or a rado signal
-	- **Ethernet**
-2. data link
-	- at this layer, data packets are encoded and decoded into bits
-	- devided into tho sub layers: MAC layer and LLC(Logical Link Control) layer
-	- MAC layer controls how a computer on the network gains access to the data and permission to transmit it. LLC layer controls frame synchronization, flow control and error checking
-	- MAC address has 48 bits (FF-FF-FF-FF-FF-FF)
-	- it can be segmented by VLAN (usually static VLAN)
-	- map each port to which VLAN number (1,2,3,4~~)
-	- to communicate with nodes in different VLAN, it needs L3 switch or router
-	- **PPP, ATM, IEEE 802.5/802.2, IEEE802.3(이더넷)**
-3. network
-	- transmitting data between devices on ==different networks==
-	- this layer provides switching and routing for transmitting data from node to node
-	- routing, forwarding, addressing, internetworking, packet sequencing  are functions of this layer
-	- **IP**
-4. transport
-	- this layer provides transparent transfer of data between end systems, or hosts
-	- is responsible for end-to-end error recovery and flow control
-	- **TCP, UDP**
-5. session
-	- this layer establishes, manages and terminates connection between applications
-	- it deals with session and connection coordination
-	- **NFS, RPC, SQL**
-6. presentation
-	- the presentation layer works to transform data into the form that the application can accept
-	- this layer formats and encrypts data to be sent across a network
-	- **encrytion, ASCII, GIF, JPEG**
-7. application
-	- this layer supports application and end-user processes.
-	- everything at this layer is application-specific
-	- this layer provides application services for transfers, email, and network software services.
-	- **HTTP, FTP**
-
 ### ARP
 - address resolution protocol
 - in network, only 2 addresses exist, one is MAC address, another is IP address.
@@ -220,7 +253,7 @@ https://opentutorials.org/course/228/4894
 |MAC address|IP address|
 |NIC(network interface card)|OS|
 
-Data link packet
+**Data link packet**
 
 |Preemble|Target MAC address|Source MAC address|type|Data|FCS|
 |--------|------------------|------------------|----|----|---|
@@ -240,20 +273,56 @@ Data link packet
 3. transport
 4. application services
 
-### TCP / UDP ![](http://a2.mzstatic.com/us/r30/Purple1/v4/11/cb/b4/11cbb408-4352-013b-9849-f57209330153/icon256.png)
+### TCP / UDP
 
 http://www.quora.com/What-is-the-difference-between-TCP-and-UDP
-stateful
+comparision
 - TCP
-
-- TCP
+	- stateful
+	- transmission control protocol (protocol no. 6)
+	- it has 20 byte header
 	- TCP can be thought of like having a telephone conversation
 	- It has a similar establishment protocol, three-way-handshake. A client will send a SYN message to a server who is listening for these message. The server, if it decides to accept the request, will send back a SYN/ACK message, both acknowledgeing the previous request and requesting its own return channel fo communication
 - UDP
+	- user datagram protocol (protocol no. 17)
+	- it has 8 byte header
+	- accept data after checking if data is ok with header length & checksum
 
-###### TCP 3 way handshaking
-###### TCP flags
-###### TCP sequence
+#### TCP flags
+control bit (6 bits)
+URG|ACK|PSH|RST|SYN|FIN
+---|---|---|---|---|---
+urgent|acknowledgent|push|reset|synchronize|finish
+
+#### TCP 3 way handshaking
+##### flag
+- SYN -> SYN/ACK -> ACK
+
+##### sequence
+- SYN (node1 seq 0)
+- => SYN/ACK (node2 seq 100)
+- => ACK (seq 1 , ack 101) which means seq + 1 and ack +1
+
+#### TCP connection termination
+##### flag
+- FIN/ACK -> ACK -> FIN/ACK -> ACK
+
+#### Common Ports
+Range|Name|Desc
+-----|----|----
+0~1023|System Ports(Well-known Ports)|General Application
+1024~49151|UserPorts|
+49152~65535|Dynamic or Private Ports|
+
+Port|Apps
+----|----
+22|SSH
+23|telnet
+25|SMTP
+53|DNS
+67|DHCP server
+68|DHCP client
+110|POP3
 
 ### VPN
 
@@ -288,12 +357,6 @@ iptables works inside internet & transport layers
 
 
 #### netstat
-
-### Common Ports
-Port|Apps
-----|----
-53|DNS
-110|POP3
 
 ### Directory Structure
 Directory|Desc
@@ -408,3 +471,4 @@ Directory|Desc
 - receive a 200 response code when navigating to the domain, but the page wont load, how do you troubleshoot?
 - how to handle problems CPU 100%
 - a client has a problem with his computer and he tells you that his IP is X.X.X.X. Diagnose the issue
+- what if domain name could be resolved in any name servers
