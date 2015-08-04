@@ -9,11 +9,10 @@
 ### Network basic
 #### Default Gateway
 the router for the subnetwork you're on
-looking for target in local network, if it is not there, then ask the default gatewar to find target (maybe outside)
+looking for target in local network, if it is not there, then ask the default gatewary to find target (maybe outside)
 
 #### Subnet Mask
-the way to segment network logically
-it tells what part of IP adress is the network identifier or device identifier
+it tells what part of IP adress is the network identifier or device identifier. 
 ```
 class A subnet - 255.0.0.0
 class B subnet - 255.255.0.0
@@ -25,19 +24,36 @@ network part - 192.168.1
 device part - 1
 ```
 
-if you wanna devide that into two network, 255.255.255.128 etc
-
-there is switch, and 2 different network connected physical. network A do not connect to network B unless there is router.
+if you wanna devide that into two network, set the subnet mask to 255.255.255.128 etc. Network A do not connect to network B unless there is router.
 
 **router connects different subnet**
 
 ### OSI Layer 7
+
+Layer|Name|
+-----|----|
+7|application
+6|presentation
+5|session
+4|transport
+3|network
+2|data link
+1|physical
+
+***
+
+
+
+
+
+
 1. physical
-	- physical connection between devices:  a cable or a rado signal
+	- physical connection between devices:  a cable or a radio signal
 	- **Ethernet**
 2. data link
 	- data unit : **frame**
-	- at this layer, data packets are encoded and decoded into bits
+	- end to end
+	- at this layer, packets are encoded and decoded into bits
 	- devided into tho sub layers: MAC layer and LLC(Logical Link Control) layer
 	- MAC layer controls how a computer on the network gains access to the data and permission to transmit it. LLC layer controls frame synchronization, flow control and error checking
 	- MAC address has 48 bits (FF-FF-FF-FF-FF-FF)
@@ -47,6 +63,7 @@ there is switch, and 2 different network connected physical. network A do not co
 	- **PPP, ATM, IEEE 802.5/802.2, IEEE802.3(이더넷)**
 3. network
 	- data unit : **packet**
+	- network to network
 	- transmitting data between devices on **different networks**
 	- this layer provides switching and routing for transmitting data from node to node
 	- routing, forwarding, addressing, internetworking, packet sequencing  are functions of this layer
@@ -461,7 +478,7 @@ Directory|Desc
 ### Active Directory Service ![](http://a2.mzstatic.com/us/r30/Purple1/v4/11/cb/b4/11cbb408-4352-013b-9849-f57209330153/icon256.png)
 - Active Directory is a database based system that provides authentication, directory, policy, and other services in a Windows environment
 - Short answer: AD is a directory services database, and LDAP is one of the protocols you can use to talk to it.
-- 
+
 ### IPSEC
 - ip network encryption protocol
 - sa : security association
