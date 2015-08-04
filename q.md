@@ -11,6 +11,8 @@ Layer|Name|
 2|data link
 1|physical
 
+![](http://qph.is.quoracdn.net/main-qimg-abd45b991837317f9bd873a7f14ab0eb?convert_to_webp=true)
+
 ---------------------------------------------------------------------------------------------------------
 ## 1. Physical Layer
 - physical connection between devices:  a cable or a radio signal
@@ -180,25 +182,19 @@ It is not goot to have each DHCP server in every VLAN, so relay agent (usually L
 
 ### DNS
 DNS is domain name system, that is a distributed naming system for resource connected to the Internet or a private network. usually domain name system maps domain name to IP. it dynamically writes the host name in IP address into DNS table
-![](https://en.wikipedia.org/wiki/Domain_Name_System#/media/File:Domain_name_space.svg)
+![](https://upload.wikimedia.org/wikipedia/commons/thumb/b/b1/Domain_name_space.svg/1200px-Domain_name_space.svg.png)
 
 #### Address resolution mechanism
-![](https://commons.wikimedia.org/wiki/File:An_example_of_theoretical_DNS_recursion.svg#/media/File:An_example_of_theoretical_DNS_recursion.svg)
+![](https://upload.wikimedia.org/wikipedia/commons/thumb/7/77/An_example_of_theoretical_DNS_recursion.svg/1200px-An_example_of_theoretical_DNS_recursion.svg.png)
+
 
 #### reverse DNS
 opposite. maps ip adress to domain name
 query to find the hostname
 
-#### etc
-your computer doesn't understand what cnn.com is.
-cnn.com will return web page
-this is basically how dns going to work for you
-that will go to your local dns server
-your local dns server also has dns server information
-it has it's own record, but if it cant find, 
-
-first look up in your dns server, and then primary dns server, finally the secondary dns server
-that will go query
+#### Simply speaking
+your computer doesn't understand what cnn.com is. so when you put cnn.com, at first that will go to your local dns server. If it doesn't know, your local dns server also has dns server information. like I said, first look up in your dns server, and then primary dns server, finally the secondary dns server
+that will go query. if you get IP address, then try to connect cnn.com, then cnn.com will return web page.
 
 ### TCP/IP network model
 1. network interface
@@ -206,19 +202,21 @@ that will go query
 3. transport
 4. application services
 
-### TCP / UDP
+![](http://qph.is.quoracdn.net/main-qimg-ff56b851ebf652a16ee47dff4fcf2349?convert_to_webp=true)
 
-http://www.quora.com/What-is-the-difference-between-TCP-and-UDP
-comparision
-- TCP
-	- stateful
+### TCP / UDP	
+
+- **TCP**
 	- transmission control protocol (protocol no. 6)
+	- it provides stateful, reliable, ordered and error-checked delivery of a stream
 	- it has 20 byte header
 	- TCP can be thought of like having a telephone conversation
 	- It has a similar establishment protocol, three-way-handshake. A client will send a SYN message to a server who is listening for these message. The server, if it decides to accept the request, will send back a SYN/ACK message, both acknowledgeing the previous request and requesting its own return channel fo communication
-- UDP
+- **UDP**
 	- user datagram protocol (protocol no. 17)
-	- it has 8 byte header
+	- UDP uses a simple connectionless transmission model. No handshaking dialogue.
+	- there is no guarantee of delivery, ordering, or duplicate protection
+	- it has 8 byte header (minimal message-oriented)
 	- accept data after checking if data is ok with header length & checksum
 
 #### TCP flags
@@ -258,6 +256,8 @@ Port|Apps
 68|DHCP client
 110|POP3
 
+http://www.quora.com/What-is-the-difference-between-TCP-and-UDP
+
 ---------------------------------------------------------------------------------------------------------
 ## 5. session
 - this layer establishes, manages and terminates connection between applications
@@ -278,6 +278,9 @@ Port|Apps
 - **HTTP, FTP**
 
 ### HTTP
+- hypertext transfer protocol is an application protocol that is base of data communication for the WWW.
+- it resides in layer 7
+
 #### HTTP 1.0 / 1.1
 - **HTTP 1.0** : every request make connection
 - **HTTP 1.1** : reuse connection
@@ -306,7 +309,13 @@ code|result
 500|Internal Server Error
 
 #### When enter www.amazon.com in browser, what will happen?
-http://www.quora.com/What-is-the-role-of-OSI-layers-when-we-open-a-webpage
+- I typically type an URL in browser, browser uses HTTP protocol and made packet.
+- the browser gives the HTTP packet to TCP and find the name of www.amazon.com in DNS server
+- this is asking the recursive DNS servers which is your ISP's recursive DNS
+- then, ask the root nameservers
+- then, ask the TLD(top-level domain) nameservers
+- then ask the authoritative DNS servers
+- and retrieve the record then receive the answer.
 
 ### Cryptography (Encryption) with SSL
 #### Symmetric cryptosystems
@@ -320,6 +329,8 @@ both keys can decode & encode.
 In EC2 SSH, the user has the private key. EC2 only has public key.
 In public-key authentication, the client gives the public key to the server. and put that file in UserHome/.ssh authorized_keys (permission 600)
 ##### RSA
+- RSA is one of the first practical public-key cryptosystems
+- key generation , encryption, decryption
 
 #### Digital Certificates
 
@@ -331,7 +342,6 @@ It contains basic things common
 - Certificate issuer
 - Digital signature from the certificate issuer
 - the public key of the subject
-	- 비공개키의 소유자는 비공개키를 이용해서 정보를 암호화 한 후에 공개키와 함께 암호화된 정보를 전송한다. 정보와 공개키를 획득한 사람은 공개키를 이용해서 암호화된 정보를 복호화 한다. 이 과정에서 공개키가 유출된다면 의도하지 않은 공격자에 의해서 데이터가 복호화 될 위험이 있다. 이런 위험에도 불구하고 비공개키를 이용해서 암호화를 하는 이유는 무엇일까? 그것은 이것이 데이터를 보호하는 것이 목적이 아니기 때문이다. 암호화된 데이터를 공개키를 가지고 복호화 할 수 있다는 것은 그 데이터가 공개키와 쌍을 이루는 비공개키에 의해서 암호화 되었다는 것을 의미한다. 즉 공개키가 데이터를 제공한 사람의 신원을 보장해주게 되는 것이다. 이러한 것을 전자 서명이라고 부른다
 - CA (certificate authority) or Root Certificate
 	- service provider need to buy certs from CA
 - SSL certs has following information below
@@ -340,6 +350,12 @@ It contains basic things common
 - SSL certs is encrypted by CA private key which is only decrypted by CA public key
 - Browser already knows CA list + CA's public key
 
+#### SSL Handshake
+![](https://docs.oracle.com/cd/E14571_01/core.1111/e10105/img/ssl_hello.gif)
+- client hello (w/ random key)
+- server hello (w/ random key)
+- certificate (decode certs with public key that is already in browser. if it is possible, that mean that certs are provided by CA^certificate_authority^)
+- with it's random key + server's random key the client makes pre-master key and then exchange it with the server after encrypt that key by the public key given by the server
 
 http://security.stackexchange.com/questions/7360/why-cant-the-ssl-handshake-be-done-in-one-step?rq=1
 https://opentutorials.org/course/228/4894
@@ -351,7 +367,7 @@ https://opentutorials.org/course/228/4894
 # Operation System
 
 ## Application
-### iptables
+### Iptables
 Iptables is used to a simple firewall in linux. iptables works inside internet & transport layers
 
 #### policy
