@@ -39,19 +39,20 @@ Layer|Name|
 3|network
 2|data link
 1|physical
-ddd
-***
-dddd
+
 ---
-ddd
-___
+
+Physical Layer
+- physical connection between devices:  a cable or a radio signal
+- **Ethernet**
+
+
 
 
 
 
 1. physical
-	- physical connection between devices:  a cable or a radio signal
-	- **Ethernet**
+
 2. data link
 	- data unit : **frame**
 	- end to end
