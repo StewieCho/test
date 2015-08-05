@@ -1,3 +1,23 @@
+# Personal
+## Self Introduction
+I am senior software engineer. Over the past year, I have built some platform system and supported for various and changing requirement of business team. In particular, I was in charge of architecting Hadoop platform between log collecting system and data analysis system. Also, I have much experience using AWS especially EC2, EMR, S3. I think my experience matches JD pretty well, so that I have applied for this job. Thanks.
+
+## Why AWS
+I am eager to work at a best company where I can grow along with the company. Obviously Amazon is one of the fastest growing company. Last year, I was so impressed at AWS re:Invent. I felt that Amazon didn't want to settle down. Your company always thinks about better services with better technologies. Whenever I feel little inconvenience in AWS, that gonna be fixed or improved in short. I love the way Amazon works.
+
+## Working Experience
+usually build platform or application and support requirements from business team. 
+
+- Advertisement platform 2011 ~ 2012
+- BI solution 2013
+- Big Data platform 2013 ~ 2015
+- Brightics (big data analysis solution) 2015 ~
+	- install soltution in client's server and troubleshoot it. 
+
+## Assignment
+Cloud computing offers several advantages (in areas of efficiency, recovery, and flexibility) over a traditional computing environment. Cloud is very **cost efficient** offering many "one-time-payment",  "**pay-as-u-go** and other scalable options. These are attractive features to the user company. When it comes to "**recovery**", since data is stored in the cloud, backing-up and restoring the data is much easier than when using a physical device. When it comes to "**flexibility**", bandwith capacity is not restricted, and a change of demand can be made quickly and easily. Users do not need extra efforts to customize and integrate applications to serve their preferences. This ease of customization is one of the most important features for new AWS customers and allows them to have more time to focus on their core business.
+
+
 # Network
 **OSI Layer 7**
 
@@ -31,8 +51,9 @@ Layer|Name|
 - **PPP, ATM, IEEE 802.5/802.2, IEEE802.3(이더넷)**
 
 ### MAC Address
+- unique identifier assigned to network interface
 - MAC address has 48 bits (FF-FF-FF-FF-FF-FF)
-- menufacturer no + social security no
+- menufacturer no (3 bytes) + host identifier (3 bytes)
 
 ### Data link frame
 |Preamble|Target MAC address|Source MAC address|type|Data|FCS|
@@ -80,8 +101,7 @@ Layer|Name|
 - **IP**
 
 ### Default Gateway
-the router for the subnetwork you're on
-looking for target in local network, if it is not there, then ask the default gatewary to find target (maybe outside)
+when looking for target in local network, if it is not there, then ask the default gateway to find target (maybe outside)
 
 ### Subnet Mask
 it tells what part of IP adress is the network identifier or device identifier. 
@@ -95,10 +115,7 @@ class C subnet - 255.255.255.0
 network part - 192.168.1
 device part - 1
 ```
-
-if you wanna devide that into two network, set the subnet mask to 255.255.255.128 etc. Network A do not connect to network B unless there is router.
-
-**router connects different subnet**
+Network A do not connect to network B unless there is router. **router connects different subnet**
 
 ### ICMP (internet control message protocol)
 ICMP is one of the main protocol of Internet Protocol suite. It is used by network devices, like router, to send error messages indicating, for example, that a requested service is not available or that a host or router could not be reached.
@@ -120,7 +137,7 @@ router is a networking device that forwards data packets between computer networ
 > layer 3 switch, router are different in the actual implementation. router is implemented in software, whereas a layer-3 switch perform the same operation using dedicated ASIC hardware.
 
 ### VPN
-VPN stands for vitual private network, which extends a private network address a public network such as the Internet.
+VPN stands for vitual private network. it extends a private network address to a public network such as the Internet.
 - tons of routers are sitting on the internet. you go throught any number of router
 - virtual private networking allows you to connect target over the internet securily
 - set up the tunnel between source and target
@@ -147,19 +164,17 @@ IPSEC is internet protocol security. that is a protocol suite for securing IP co
 - **TCP, UDP**
 
 ### NAT
-Network address translation is a methodology of remapping one internal IP address into external another by modifying network address information in IP datagram.
-- Network Address Translation
-- private IP와 public IP 간 주소를 변환해 주는 기술
-- public IP vs private IP
+Network address translation is a methodology of remapping one internal IP address into external IP address by modifying network address information in IP datagram.
+
 - 3 mode
-	- **one-to-many** : map multiple private hosts to one publicly exposed IP. Port address translation (PAT) allows many internal hosts to share a single external IP address.
+	- **one-to-many** : map multiple private hosts to one public IP. Port address translation (PAT) allows many internal hosts to share a single external IP address.
 	- **one-to-one** : basic
-- **NAT loopback** : the access of a service via the public IP address from inside the local network
+	- **NAT loopback** : the access of a service via the public IP address from inside the local network
 - pooled mode, static mode
 - default gateway is usually router which has NAT built into it
 
 ### DHCP
-dynamic host configuration protocol is a network protocol to dynamically assign the ip address to the client computer or network devices.DHCP server will provid certain TCP/IP information. **/etc/dhcpd.conf**
+dynamic host configuration protocol is a network protocol to dynamically assign the ip address to the client computer or network devices. DHCP server will provide certain TCP/IP information. **/etc/dhcpd.conf**
 
 #### 4 step
 - **DHCP discovery** : using broadcast address(255.255.255.255) request all nodes to ask where the DHCP server is
@@ -192,7 +207,7 @@ opposite. maps ip adress to domain name
 query to find the hostname
 
 #### Simply speaking
-your computer doesn't understand what cnn.com is. so when you put cnn.com, at first that will go to your local dns server. If it doesn't know, your local dns server also has dns server information. like I said, first look up in your dns server, and then primary dns server, finally the secondary dns server
+your computer doesn't understand what amazon.com is. so when you put amazon.com, at first that will go to your local dns server. If it doesn't know, your local dns server also has dns server information. so, at First look up in your dns server, and then primary dns server, finally the secondary dns server
 that will go query. if you get IP address, then try to connect cnn.com, then cnn.com will return web page.
 
 #### When enter www.amazon.com in browser, what will happen?
@@ -224,12 +239,12 @@ that will go query. if you get IP address, then try to connect cnn.com, then cnn
 - **UDP**
 	- user datagram protocol (protocol no. 17)
 	- UDP uses a simple connectionless transmission model. No handshaking dialogue.
-	- there is no guarantee of delivery, ordering, or duplicate protection
+	- **there is no guarantee of delivery, ordering, or duplicate protection**
 	- it has 8 byte header (minimal message-oriented)
 	- accept data after checking if data is ok with header length & checksum
 
 #### TCP flags
-control bit (6 bits)
+control bit (9 bits). 6 kinds
 
 URG|ACK|PSH|RST|SYN|FIN
 ---|---|---|---|---|---
@@ -243,6 +258,8 @@ urgent|acknowledgent|push|reset|synchronize|finish
 - SYN (node1 seq 0)
 - => SYN/ACK (node2 seq 100)
 - => ACK (seq 1 , ack 101) which means seq + 1 and ack +1
+
+![](http://2.bp.blogspot.com/-DNETZOSRGbc/UAJ3es1e9-I/AAAAAAAAHlY/MlSqIG2pAA4/s1600/TCP-Connection-Establishment.png)
 
 #### TCP connection termination
 ##### flag
@@ -354,7 +371,8 @@ open called "certs".It contains basic things common
 - client hello (w/ random key)
 - server hello (w/ random key)
 - certificate (decode certs with public key that is already in browser. if it is possible, that mean that certs are provided by CA^certificate_authority^)
-- with it's random key + server's random key the client makes pre-master key and then exchange it with the server after encrypt that key by the public key given by the server
+- with it's random key + server's random key , the client makes pre-master key and exchange it with the server after encrypt that key by the public key given by the server
+- then they calculates keys 
 
 http://security.stackexchange.com/questions/7360/why-cant-the-ssl-handshake-be-done-in-one-step?rq=1
 https://opentutorials.org/course/228/4894
@@ -401,10 +419,12 @@ https://www.frozentux.net/iptables-tutorial/iptables-tutorial.html
 #### Access Files
 - /etc/hosts : List hosts for name lookup use that are locally required.
 - /etc/host.conf
+
 ```
 multi on
 ```
 - /etc/hosts.allow
+
 ```
 #
 # hosts.allow	This file contains access rules which are used to
@@ -422,6 +442,7 @@ ALL:70.50.
 ALL:70.50.182.
 ```
 - /etc/hosts.deny
+
 ```
 #
 # hosts.deny	This file contains access rules which are used to
@@ -440,6 +461,7 @@ ALL:ALL
 ```
 #### Booting and login/logout
 - /etc/rc.d/rc.local
+
 ```
 #!/bin/sh
 #
@@ -455,6 +477,7 @@ touch /var/lock/subsys/local
 #### System Administration
 - /etc/group
 - /etc/passwd
+
 ```
 root:x:0:0:root:/root:/bin/bash
 bin:x:1:1:bin:/bin:/sbin/nologin
@@ -465,24 +488,28 @@ adm:x:3:4:adm:/var/adm:/sbin/nologin
 ```
 #### Networking
 - /etc/resolv.conf
+
 ```
 nameserver 203.241.135.130
 ```
 
 - /etc/named.conf
 - /etc/networks
+
 ```
 default 0.0.0.0
 loopback 127.0.0.0
 link-local 169.254.0.0
 ```
 - /etc/sysconfig/nework
+
 ```
 NETWORKING=yes
 NETWORKING_IPV6=yes
 HOSTNAME=bdphdm01
 ```
 - /etc/services
+
 ```
 # service-name  port/protocol  [aliases ...]   [# comment]
 tcpmux          1/tcp                           # TCP port service multiplexer
@@ -577,7 +604,9 @@ Directory|Desc
 - **RAID 1+0** creates a striped set from a series of mirrored drives. The array can sustain multiple drive losses so long as no mirror loses all its drive
 
 ## Inodes
-a file in the file system is basically a link to an inode. A hard link then just creates another file with a link to the same underlying inode. When you delete a file, it removes one link to the underlying inode. The inodes is only deleted when all links to the inode have been deleted.
+a file in the file system is basically a link to an inode. 
+
+- A hard link then just creates another file with a link to the same underlying inode. When you delete a file, it removes one link to the underlying inode. The inodes is only deleted when all links to the inode have been deleted.
 
 A symbolic(soft) link is a link to the another name in the file system.
 
