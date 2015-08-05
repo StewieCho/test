@@ -160,7 +160,7 @@ Network address translation is a methodology of remapping one internal IP addres
 - default gateway is usually router which has NAT built into it
 
 ### DHCP
-dynamic host configuration protocol is a network protocol to dynamically assign the ip address to the client computer or network devices.DHCP server will provid certain TCP/IP information 
+dynamic host configuration protocol is a network protocol to dynamically assign the ip address to the client computer or network devices.DHCP server will provid certain TCP/IP information. **/etc/dhcpd.conf**
 
 #### 4 step
 - **DHCP discovery** : using broadcast address(255.255.255.255) request all nodes to ask where the DHCP server is
@@ -181,7 +181,7 @@ It is not goot to have each DHCP server in every VLAN, so relay agent (usually L
 
 
 ### DNS
-DNS is domain name system, that is a distributed naming system for resource connected to the Internet or a private network. usually domain name system maps domain name to IP. it dynamically writes the host name in IP address into DNS table
+DNS is domain name system, that is a distributed naming system for resource connected to the Internet or a private network. usually domain name system maps domain name to IP. it dynamically writes the host name in IP address into DNS table. Related files are /etc/host.conf, /etc/hosts
 ![](https://upload.wikimedia.org/wikipedia/commons/thumb/b/b1/Domain_name_space.svg/1200px-Domain_name_space.svg.png)
 
 #### Address resolution mechanism
@@ -195,6 +195,16 @@ query to find the hostname
 #### Simply speaking
 your computer doesn't understand what cnn.com is. so when you put cnn.com, at first that will go to your local dns server. If it doesn't know, your local dns server also has dns server information. like I said, first look up in your dns server, and then primary dns server, finally the secondary dns server
 that will go query. if you get IP address, then try to connect cnn.com, then cnn.com will return web page.
+
+#### When enter www.amazon.com in browser, what will happen?
+- I typically type an URL in browser, browser uses HTTP protocol and made packet.
+- the browser gives the HTTP packet to TCP and find the name of www.amazon.com in DNS server
+- this is asking the recursive DNS servers which is your ISP's recursive DNS
+- then, ask the root nameservers
+- then, ask the TLD(top-level domain) nameservers
+- then ask the authoritative DNS servers
+- and retrieve the record then receive the answer.
+
 
 ### TCP/IP network model
 1. network interface
@@ -308,15 +318,6 @@ code|result
 404|Not Found
 500|Internal Server Error
 
-#### When enter www.amazon.com in browser, what will happen?
-- I typically type an URL in browser, browser uses HTTP protocol and made packet.
-- the browser gives the HTTP packet to TCP and find the name of www.amazon.com in DNS server
-- this is asking the recursive DNS servers which is your ISP's recursive DNS
-- then, ask the root nameservers
-- then, ask the TLD(top-level domain) nameservers
-- then ask the authoritative DNS servers
-- and retrieve the record then receive the answer.
-
 ### Cryptography (Encryption) with SSL
 #### Symmetric cryptosystems
 use the same key for decoding and encoding
@@ -397,6 +398,117 @@ iptables -I INPUT 1 -p tcp --dport 22 -s 192.168.1.0/24 -j ACCEPT
 ```
 
 https://www.frozentux.net/iptables-tutorial/iptables-tutorial.html
+
+### Linux configuration files
+#### Access Files
+- /etc/hosts : List hosts for name lookup use that are locally required.
+- /etc/host.conf
+```
+multi on
+```
+- /etc/hosts.allow
+```
+#
+# hosts.allow	This file contains access rules which are used to
+#		allow or deny connections to network services that
+#		either use the tcp_wrappers library or that have been
+#		started through a tcp_wrappers-enabled xinetd.
+#
+#		See 'man 5 hosts_options' and 'man 5 hosts_access'
+#		for information on rule syntax.
+#		See 'man tcpd' for information on tcp_wrappers
+#
+ALL:182.192.71.
+ALL:70.50.122.
+ALL:70.50.
+ALL:70.50.182.
+```
+- /etc/hosts.deny
+```
+#
+# hosts.deny	This file contains access rules which are used to
+#		deny connections to network services that either use
+#		the tcp_wrappers library or that have been
+#		started through a tcp_wrappers-enabled xinetd.
+#
+#		The rules in this file can also be set up in
+#		/etc/hosts.allow with a 'deny' option instead.
+#
+#		See 'man 5 hosts_options' and 'man 5 hosts_access'
+#		for information on rule syntax.
+#		See 'man tcpd' for information on tcp_wrappers
+#
+ALL:ALL
+```
+#### Booting and login/logout
+- /etc/rc.d/rc.local
+```
+#!/bin/sh
+#
+# This script will be executed *after* all the other init scripts.
+# You can put your own initialization stuff in here if you don't
+# want to do the full Sys V style init stuff.
+touch /var/lock/subsys/local
+```
+
+#### File System
+- /etc/fstab
+
+#### System Administration
+- /etc/group
+- /etc/passwd
+```
+root:x:0:0:root:/root:/bin/bash
+bin:x:1:1:bin:/bin:/sbin/nologin
+daemon:x:2:2:daemon:/sbin:/sbin/nologin
+adm:x:3:4:adm:/var/adm:/sbin/nologin
+.
+.
+```
+#### Networking
+- /etc/resolv.conf
+```
+nameserver 203.241.135.130
+```
+
+- /etc/named.conf
+- /etc/networks
+```
+default 0.0.0.0
+loopback 127.0.0.0
+link-local 169.254.0.0
+```
+- /etc/sysconfig/nework
+```
+NETWORKING=yes
+NETWORKING_IPV6=yes
+HOSTNAME=bdphdm01
+```
+- /etc/services
+```
+# service-name  port/protocol  [aliases ...]   [# comment]
+tcpmux          1/tcp                           # TCP port service multiplexer
+tcpmux          1/udp                           # TCP port service multiplexer
+rje             5/tcp                           # Remote Job Entry
+rje             5/udp                           # Remote Job Entry
+```
+
+#### System Commands
+#### Daemons
+
+- /etc/sudoer
+```
+.
+.
+.
+## Allow root to run any commands anywhere 
+root	ALL=(ALL) 	ALL
+## Allows people in group wheel to run all commands
+# %wheel	ALL=(ALL)	ALL
+
+```
+
+
 
 ## Directory Structure
 Directory|Desc
@@ -497,10 +609,10 @@ df -ih
 ### Hard Link
 - a hard link is a mapping from a directory entry to an inode
 
-## LDAP ![](http://a2.mzstatic.com/us/r30/Purple1/v4/11/cb/b4/11cbb408-4352-013b-9849-f57209330153/icon256.png)
+## LDAP
 - LDAP (Lightweight Directory Access Protocol) is an application protocol for querying and modifying items in directory service providers like Active Directory, which supports a form of LDAP.
 
-## Active Directory Service ![](http://a2.mzstatic.com/us/r30/Purple1/v4/11/cb/b4/11cbb408-4352-013b-9849-f57209330153/icon256.png)
+## Active Directory Service
 - Active Directory is a database based system that provides authentication, directory, policy, and other services in a# Network
 - Short answer: AD is a directory services database, and LDAP is one of the protocols you can use to talk to it.
 ---------------------------------------------------------------------------------------------------------
