@@ -23,9 +23,9 @@ Layer|Name|
 - data unit : **frame**
 - end to end
 - at this layer, frame(including packet) are encoded and decoded into bits
-- devided into tho sub layers: MAC layer and LLC(Logical Link Control) layer
+- devided into tho sub layers: **MAC layer** and LLC(Logical Link Control) layer
 - MAC layer controls how a computer on the network gains access to the data and permission to transmit it. LLC layer controls frame synchronization, flow control and error checking
-- it can be segmented by VLAN (usually static VLAN)
+- it can be segmented by **VLAN** (usually static VLAN)
 - map each port to which VLAN number (1,2,3,4~~)
 - to communicate with nodes in different VLAN, it needs L3 switch or router
 - **PPP, ATM, IEEE 802.5/802.2, IEEE802.3(이더넷)**
@@ -51,7 +51,7 @@ Layer|Name|
 #### Process
 - broadcast the request to find the mac address with target IP
 - target device responses MAC address to the client
-- register IP-MAC adress mapping in ARP table
+- register **IP-MAC address mapping** in ARP table
 - unicast the target with MAC address
 
 ### Switch
@@ -59,11 +59,11 @@ Layer|Name|
 - end to end
 - there is a map from MAC address to physical ports
 - 4 func.
-	- flooding (broadcasting out all physical port but the source node)
-	- forwarding (send packet to the destination)
-	- learning (which port is which pc **mac** )
-	- filtering (after estblishing mac table, it do not broadcast packets)
-	- aging (like MAC table cache)
+	- **flooding** (broadcasting out all physical port but the source node)
+	- **forwarding** (send packet to the destination)
+	- **learning** (which port is which pc **mac** )
+	- **filtering** (after estblishing mac table, it do not broadcast packets)
+	- **aging** (like MAC table cache)
 
 ---------------------------------------------------------------------------------------------------------
 ## 3. Network Layer
@@ -120,8 +120,7 @@ router is a networking device that forwards data packets between computer networ
 > layer 3 switch, router are different in the actual implementation. router is implemented in software, whereas a layer-3 switch perform the same operation using dedicated ASIC hardware.
 
 ### VPN
-VPN stands for vitual private network, which extends a private network acress a public network such as the Internet.
-
+VPN stands for vitual private network, which extends a private network address a public network such as the Internet.
 - tons of routers are sitting on the internet. you go throught any number of router
 - virtual private networking allows you to connect target over the internet securily
 - set up the tunnel between source and target
@@ -335,8 +334,7 @@ In public-key authentication, the client gives the public key to the server. and
 
 #### Digital Certificates
 
-open called "certs"
-It contains basic things common
+open called "certs".It contains basic things common
 
 - Subject's name
 - Expiration date
@@ -505,9 +503,7 @@ rje             5/udp                           # Remote Job Entry
 root	ALL=(ALL) 	ALL
 ## Allows people in group wheel to run all commands
 # %wheel	ALL=(ALL)	ALL
-
 ```
-
 
 
 ## Directory Structure
@@ -624,4 +620,3 @@ df -ih
 - a client has a problem with his computer and he tells you that his IP is X.X.X.X. Diagnose the issue
 - what if domain name could not be resolved in any name servers
 - Short answer: AD is a directory services database, and LDAP is one of the protocols you can use to talk to it.
-
