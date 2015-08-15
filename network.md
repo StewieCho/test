@@ -97,6 +97,23 @@ device part - 1
 ```
 Network A do not connect to network B unless there is router. **router connects different subnet**
 
+### CIDR
+it stands for classless inter-domain routing. that is a method for allocating IP address and routing Internet Protocol packets.
+
+```
+192.168.0.1/24 == 192.168.0.1/255.255.255.0
+	24 bits -> network identifier
+```
+- CIDR rage notation example
+
+CIDR format|First Host|Last Host|Number of Hosts
+-----------|----------|---------|---------------
+192.168.0.1/24|192.168.0.1|192.168.0.254|254
+192.168.0.1/23|192.168.0.1|192.168.0.126|126
+192.168.0.10/30|192.168.0.10|192.168.0.11|2
+10.0.0.0/8|10.0.0.1|10.255.255.254|16777214
+
+
 ### ICMP (internet control message protocol)
 ICMP is one of the main protocol of Internet Protocol suite. It is used by network devices, like router, to send error messages indicating, for example, that a requested service is not available or that a host or router could not be reached.
 #### ping
@@ -175,8 +192,14 @@ It is not goot to have each DHCP server in every VLAN, so relay agent (usually L
 
 
 ### DNS
-DNS is domain name system, that is a distributed naming system for resource connected to the Internet or a private network. usually domain name system maps domain name to IP. it dynamically writes the host name in IP address into DNS table. Related files are /etc/host.conf, /etc/hosts
+DNS is domain name system, that is a distributed naming system for resource connected to the Internet or a private network. usually domain name system maps domain name to IP. it dynamically writes the host name in IP address into DNS table. Related files are /etc/host.conf, /etc/hosts. Remeber that DNS resolver ask DNS server with socket library instead of client application.
 ![](https://upload.wikimedia.org/wikipedia/commons/thumb/b/b1/Domain_name_space.svg/1200px-Domain_name_space.svg.png)
+
+#### DNS type
+- MX
+- A
+- CNAME
+- PTR
 
 #### Address resolution mechanism
 ![](https://upload.wikimedia.org/wikipedia/commons/thumb/7/77/An_example_of_theoretical_DNS_recursion.svg/1200px-An_example_of_theoretical_DNS_recursion.svg.png)
@@ -194,10 +217,10 @@ that will go query. if you get IP address, then try to connect cnn.com, then cnn
 - I typically type an URL in browser, browser uses HTTP protocol and made packet.
 - the browser gives the HTTP packet to TCP and find the name of www.amazon.com in DNS server
 - this is asking the recursive DNS servers which is your ISP's recursive DNS
-- then, ask the root nameservers
-- then, ask the TLD(top-level domain) nameservers
-- then ask the authoritative DNS servers
+- then, DNS server asks the root nameservers
+- then, DNS server asks the TLD(top-level domain) nameservers
 - and retrieve the record then receive the answer.
+
 
 
 ### TCP/IP network model
@@ -243,7 +266,10 @@ urgent|acknowledgent|push|reset|synchronize|finish
 
 #### TCP connection termination
 ##### flag
-- FIN/ACK -> ACK -> FIN/ACK -> ACK
+- C ---FIN---> S
+- C <---ACK--- S
+- C <---FIN--- S
+- C ---ACK---> S
 
 #### Common Ports
 Range|Name|Desc
@@ -263,6 +289,11 @@ Port|Apps
 110|POP3
 
 http://www.quora.com/What-is-the-difference-between-TCP-and-UDP
+
+#### MSS, MTU
+- MSS : Maximum Segment Size (TCP)
+- MTU : Maximum Transmission Unit (Digital Data length)
+	- usually TCP header + IP header is 40 bytes, so that MTU - 40 bytes = MSS
 
 ---------------------------------------------------------------------------------------------------------
 ## 5. session
