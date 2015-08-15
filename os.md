@@ -1,5 +1,26 @@
 # Operation System
 
+## Basic
+### TTY
+
+- computer terminal
+- getty, short for "get teletype", is a Unix program running on a host computer that manages physical or virtual terminals (TTYs). When it detects a connection, it prompts for a username and runs the 'login' program to authenticate the user
+- background program has terminal, daemon don't.
+- 유닉스 전문 용어로 tty는 단순히 읽기와 쓰기를 넘어 몇 가지 추가적인 명령어를 지원하는 디바이스 파일을 뜻합니다. 그리고 터미널은 사실상 이 tty와 동일한 의미로 사용됩니다. 일부 tty는 하드웨어 디바이스를 위해 커널이 제공하며 그 예로 키보드에서 들어오는 입력과 텍스트 모드 화면으로 나가는 출력, 시리얼 라인을 통해 전송되는 입출력이 있습니다. 그 외의 tty는 씬 커널 레이어를 통해 터미널 에뮬레이터라고 불리는 프로그램으로 제공되며 이런 tty를pseudo-tty로 부르기도 합니다. 터미널 에뮬레이터로는 Xterm(X 윈도우 시스템), Screen(프로그램과 다른 터미널 사이에 독립적인 계층을 제공), SSH(한 머신에서 프로그램으로 다른 머신의 터미널에 연결), Expect(스크립팅 터미널 인터랙션용) 등이 있습니다.
+
+```
+[yundream@huhu loging_server]$ ./my_server&
+[yundream@huhu loging_server]$ ps -efjc
+UID        PID  PPID  PGID   SID   CLS PRI STIME TTY          TIME CMD
+yundream  4314  4219  4314  4175     -  30 15:36 ttyp0    00:00:00 ./my_server&
+
+[yundream@huhu loging_server]$ ./my_server -D
+[yundream@huhu loging_server]$ ps -efjc
+UID        PID  PPID  PGID   SID   CLS PRI STIME TTY          TIME CMD
+yundream  4319     1  4319  4319     -  30 15:37 ?        00:00:00 ./my_server
+```
+
+
 ## Application
 ### Iptables
 Iptables is used to a simple firewall in linux. iptables works inside internet & transport layers
@@ -148,6 +169,10 @@ root	ALL=(ALL) 	ALL
 ## Allows people in group wheel to run all commands
 # %wheel	ALL=(ALL)	ALL
 ```
+
+## BIND
+- Berkeley Internet Name Domain
+
 
 
 ## Directory Structure
