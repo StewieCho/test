@@ -59,6 +59,7 @@ Layer|Name|
 - layer 2 (data link)
 - end to end
 - there is a map from MAC address to physical ports
+- capable to group ports to set VLAN
 - 4 func.
 	- **flooding** (broadcasting out all physical port but the source node)
 	- **forwarding** (send packet to the destination)
@@ -79,6 +80,19 @@ Layer|Name|
 - loop-back address : 127.0.0.1/32 (1 octet is 127, rest of them do care)
 - source, target MAC address in IP packet changes in every network
 - **IP**
+
+### IP
+#### A class
+- fist bit starts with 0 (1.0.0.0 ~ 126.0.0.0)
+
+#### B class
+- first 2 bits starts with 10 (128.0.0.0 ~ 191.0.0.0)
+
+#### C class
+- first 3 bits starts with 110 (192.0.0.0 ~ 223.0.0.0)
+
+all bits in host part is 0 mean Network address
+all bits in host para is 1 means Broadcasting Address
 
 ### Default Gateway
 when looking for target in local network, if it is not there, then ask the default gateway to find target (maybe outside)
@@ -132,6 +146,12 @@ router is a networking device that forwards data packets between computer networ
 - network to network
 
 > layer 3 switch, router are different in the actual implementation. router is implemented in software, whereas a layer-3 switch perform the same operation using dedicated ASIC hardware.
+
+Layer 3 switch|Common|Router
+--------------|------|------
+MAC table|Routing|NAT/NAPT
+VLAN|IP packet forwarding|VPN
+transmitting MAC frame||PPPoE
 
 ### VPN
 VPN stands for vitual private network. it extends a private network address to a public network such as the Internet.
