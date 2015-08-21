@@ -20,8 +20,41 @@ UID        PID  PPID  PGID   SID   CLS PRI STIME TTY          TIME CMD
 yundream  4319     1  4319  4319     -  30 15:37 ?        00:00:00 ./my_server
 ```
 
+### File Authorization
+```
+> umask
+0002
 
-## Application
+> umask 077
+```
+
+SetUID
+- when it is executed, it runs with user permission
+```bash
+> chmod 4755 [File]
+> ll /usr/bin/passwd
+-rwsr-xr-x. 1 root root 30768 Feb 22  2012 /usr/bin/passwd
+```
+
+SetGID
+- when it is executed, it runs with group permission
+```bash
+> chmod 2755 [File]
+```
+
+stick Bit
+- even though it has 777 permision so that it looks like other can erase, only user can delete it
+```bash
+drwxrwxrwt. 109 root root 610304 Aug 20 16:27 tmp/
+> chmod 1777 [FILE]
+> ll
+total 8
+-rwxrwxrwx. 1 hadoop hadoop    0 Aug 20 16:34 stickbit*
+> rm -rf stickbit 
+rm: cannot remove `stickbit': Operation not permitted
+```
+
+## Tools
 ### Iptables
 Iptables is used to a simple firewall in linux. iptables works inside internet & transport layers
 
@@ -52,6 +85,17 @@ iptables -I INPUT 1 -p tcp --dport 22 -s 192.168.1.0/24 -j ACCEPT
 ```
 
 https://www.frozentux.net/iptables-tutorial/iptables-tutorial.html
+
+### at
+```bash
+> cat /etc/al.allow (users to prohibit to use at)
+> cat /etc/al.deny (users to be allowed to use at)
+```
+
+### crontab
+```bash
+> crontab -e
+```
 
 ### Linux configuration files
 #### Access Files
@@ -111,6 +155,79 @@ touch /var/lock/subsys/local
 
 #### File System
 - /etc/fstab
+
+```bash
+> swapon -s
+Filename				Type		Size	Used	Priority
+/dev/sdb1                               partition	133119992	10016	-1
+> cat /etc/fstab
+
+#
+# /etc/fstab
+# Created by anaconda on Thu Aug 28 15:19:06 2014
+#
+# Accessible filesystems, by reference, are maintained under '/dev/disk'
+# See man pages fstab(5), findfs(8), mount(8) and/or blkid(8) for more info
+#
+/dev/mapper/vg_bdpapp01-LogVol03 /                       ext4    defaults        1 1
+UUID=43cd7dd3-f20a-4084-ad2a-626125ac8dbf /boot                   ext4    defaults        1 2
+/dev/mapper/vg_bdpapp01-LogVol00 /home                   ext4    defaults        1 2
+/dev/mapper/vg_bdpapp01-LogVol02 /usr                    ext4    defaults        1 2
+/dev/mapper/vg_bdpapp01-LogVol01 /var                    ext4    defaults        1 2
+UUID=98e7d2af-00e5-4517-bb83-de03871cbcec swap                    swap    defaults        0 0
+tmpfs                   /dev/shm                tmpfs   defaults        0 0
+devpts                  /dev/pts                devpts  gid=5,mode=620  0 0
+sysfs                   /sys                    sysfs   defaults        0 0
+proc                    /proc                   proc    defaults        0 0
+```
+
+- mkfs
+```bash
+> cat /etc/mke2fs.conf 
+[defaults]
+	base_features = sparse_super,filetype,resize_inode,dir_index,ext_attr
+	blocksize = 4096
+	inode_size = 256
+	inode_ratio = 16384
+[fs_types]
+	ext3 = {
+		features = has_journal
+	}
+	ext4 = {
+		features = has_journal,extent,huge_file,flex_bg,uninit_bg,dir_nlink,extra_isize
+		inode_size = 256
+	}
+	ext4dev = {
+		features = has_journal,extent,huge_file,flex_bg,uninit_bg,dir_nlink,extra_isize
+		inode_size = 256
+		options = test_fs=1
+	}
+	small = {
+		blocksize = 1024
+		inode_size = 128
+		inode_ratio = 4096
+	}
+	floppy = {
+		blocksize = 1024
+		inode_size = 128
+		inode_ratio = 8192
+	}
+	news = {
+		inode_ratio = 4096
+	}
+	largefile = {
+		inode_ratio = 1048576
+		blocksize = -1
+	}
+	largefile4 = {
+		inode_ratio = 4194304
+		blocksize = -1
+	}
+	hurd = {
+	     blocksize = 4096
+	     inode_size = 128
+	}
+```
 
 #### System Administration
 - /etc/group
@@ -267,7 +384,18 @@ An inode is metadata of the data. whenever a user or a program needs access to a
 
 generally, 1% of disk is for inode. It's possible to check inode usage. There is no way to expand inode quantity without reboot.
 ```
-df -ih
+> df -ih
+Filesystem            Inodes   IUsed   IFree IUse% Mounted on
+/dev/mapper/vg_bdpapp01-LogVol03
+                         22M     29K     22M    1% /
+tmpfs                   5.9M       1    5.9M    1% /dev/shm
+/dev/sda1                50K      39     50K    1% /boot
+/dev/mapper/vg_bdpapp01-LogVol00
+                         92M     33K     92M    1% /home
+/dev/mapper/vg_bdpapp01-LogVol02
+                        3.1M     56K    3.1M    2% /usr
+/dev/mapper/vg_bdpapp01-LogVol01
+                        313K    3.6K    309K    2% /var
 ```
 
 ### Soft Link
@@ -275,6 +403,115 @@ df -ih
 
 ### Hard Link
 - a hard link is a mapping from a directory entry to an inode
+
+## Booting
+- Power ON
+- BIOS
+	- check hardware
+	- select boot device
+	- load MBR (booting device first 512kb)
+	- load bootloader
+- Bootloader
+- Kernel Init
+- Initd
+- login prompt
+
+### upstart (instead of init)
+
+```bash
+> initctl list
+rc stop/waiting
+tty (/dev/tty3) start/running, process 5753
+tty (/dev/tty2) start/running, process 5751
+tty (/dev/tty1) start/running, process 5749
+tty (/dev/tty6) start/running, process 5759
+tty (/dev/tty5) start/running, process 5757
+tty (/dev/tty4) start/running, process 5755
+plymouth-shutdown stop/waiting
+control-alt-delete stop/waiting
+rcS-emergency stop/waiting
+readahead-collector stop/waiting
+kexec-disable stop/waiting
+quit-plymouth stop/waiting
+rcS stop/waiting
+prefdm stop/waiting
+init-system-dbus stop/waiting
+readahead stop/waiting
+splash-manager stop/waiting
+start-ttys stop/waiting
+readahead-disable-services stop/waiting
+rcS-sulogin stop/waiting
+serial stop/waiting
+```
+
+### ubuntu runlevel
+![](http://4.bp.blogspot.com/-beNcogRrk7s/VBbD7EPnMBI/AAAAAAAAAjk/QPBgVZegkTE/s1600/slrl.png)
+
+### daemon
+#### init daemon
+- process 1
+```bash
+> pstree
+init─┬─abrt-dump-oops
+     ├─abrtd
+     ├─acpid
+     ├─atd
+     ├─auditd───{auditd}
+     ├─automount───4*[{automount}]
+     ├─certmonger
+     ├─console-kit-dae───63*[{console-kit-da}]
+     ├─crond
+     ├─cupsd
+     ├─dbus-daemon───{dbus-daemon}
+     ├─hald───hald-runner─┬─hald-addon-acpi
+     │                    └─hald-addon-inpu
+     ├─irqbalance
+     ├─java───56*[{java}]
+     ├─java───35*[{java}]
+     ├─java───24*[{java}]
+     ├─java───39*[{java}]
+     ├─java───68*[{java}]
+     ├─java───29*[{java}]
+     ├─login───bash
+     ├─master───qmgr
+     ├─5*[mingetty]
+     ├─ntpd
+     ├─rpc.idmapd
+     ├─rpc.statd
+     ├─rpcbind
+     ├─rsyslogd───3*[{rsyslogd}]
+     ├─sshd───sshd───bash───pstree
+     ├─udevd───2*[udevd]
+     ├─vsftpd
+     └─xinetd
+```
+
+### Bootloder
+#### GRUB
+GRand Unified Bootloader (최신버전 GRUB2)
+/boot/grub/grub.cfg
+```bash
+> cat /boot/grub/grub.conf 
+# grub.conf generated by anaconda
+#
+# Note that you do not have to rerun grub after making changes to this file
+# NOTICE:  You have a /boot partition.  This means that
+#          all kernel and initrd paths are relative to /boot/, eg.
+#          root (hd0,0)
+#          kernel /vmlinuz-version ro root=/dev/mapper/vg_bdpapp01-LogVol03
+#          initrd /initrd-[generic-]version.img
+#boot=/dev/sda
+default=0
+timeout=5
+splashimage=(hd0,0)/grub/splash.xpm.gz
+hiddenmenu
+title CentOS (2.6.32-279.el6.x86_64)
+	root (hd0,0)
+	kernel /vmlinuz-2.6.32-279.el6.x86_64 ro root=/dev/mapper/vg_bdpapp01-LogVol03 rd_NO_LUKS  KEYBOARDTYPE=pc KEYTABLE=us LANG=en_US.UTF-8 rd_NO_MD SYSFONT=latarcyrheb-sun16 crashkernel=auto rd_LVM_LV=vg_bdpapp01/LogVol03 rd_NO_DM rhgb quiet
+	initrd /initramfs-2.6.32-279.el6.x86_64.img
+```
+
+
 
 ## LDAP
 - LDAP (Lightweight Directory Access Protocol) is an application protocol for querying and modifying items in directory service providers like Active Directory, which supports a form of LDAP.
