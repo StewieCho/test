@@ -119,6 +119,14 @@ target     prot opt source               destination
 
 https://www.frozentux.net/iptables-tutorial/iptables-tutorial.html
 
+#### Logging
+```
+> iptables -N LOGGING
+> iptables -A INPUT -j LOGGING
+> iptables -A INPUT -P ICMP -d 192.168.2.121 -j ACCEPT
+> iptables -A LOGGING -j log
+```
+
 ### at
 ```bash
 > cat /etc/al.allow (users to prohibit to use at)
@@ -195,7 +203,6 @@ Filename				Type		Size	Used	Priority
 /dev/sdb1                               partition	133119992	10016	-1
 > cat /etc/fstab
 
-#
 # /etc/fstab
 # Created by anaconda on Thu Aug 28 15:19:06 2014
 #
@@ -320,23 +327,78 @@ root	ALL=(ALL) 	ALL
 # %wheel	ALL=(ALL)	ALL
 ```
 
+#### Hosts Allow & Deny
+
+```
+/etc/hosts.deny
+ALL:ALL
+```
+
+```
+/etc/hosts.allow
+httpd       : ALL
+sshd        : 192.168.56.101
+sendmail        : ALL
+mysql        : ALL
+```
+
+deny가 ALL로 되어 있다 해도 allow 에 세부 application 별 IP 를 설정할 수 있다.
+
+#### syslog
+* /var/log/syslog 에서 확인 가능
+* 설정 파일은 /etc/rsyslog.conf
+
+#### cron
+cron 데몬이 기본으로 읽어오는 것은 3가지
+
+* /etc/crontab
+* /etc/cron.d
+* /var/spool/cron/crontab
+
+```
+> crontab -l (list for indivisual users)
+> crontab -e (edit)
+```
+
+/etc/cron.deny, /etc/cron.allow 를 통해 통제 가능
+
+
+
 ## BIND
 - Berkeley Internet Name Domain
 
+## PAM
+
+pluggable authentication module. 특정 프로그램 인증이 PAM 을 지원하는지 알아보기 위해서는 다음과 같이 입력
+
+```
+root@ubuntu-test:/etc# ldd /usr/bin/passwd
+	linux-vdso.so.1 =>  (0x00007ffdecbdb000)
+	libpam.so.0 => /lib/x86_64-linux-gnu/libpam.so.0 (0x00007f3753c5e000)
+	libpam_misc.so.0 => /lib/x86_64-linux-gnu/libpam_misc.so.0 (0x00007f3753a5a000)
+	libselinux.so.1 => /lib/x86_64-linux-gnu/libselinux.so.1 (0x00007f3753837000)
+	libc.so.6 => /lib/x86_64-linux-gnu/libc.so.6 (0x00007f3753472000)
+	libaudit.so.1 => /lib/x86_64-linux-gnu/libaudit.so.1 (0x00007f375324e000)
+	libdl.so.2 => /lib/x86_64-linux-gnu/libdl.so.2 (0x00007f375304a000)
+	libpcre.so.3 => /lib/x86_64-linux-gnu/libpcre.so.3 (0x00007f3752e0c000)
+	/lib64/ld-linux-x86-64.so.2 (0x00007f3753e6c000)
+```
+
+/etc/pam.d 에서 설정 파일들을 확인 가능
 
 
 ## Directory Structure
 Directory|Desc
 ---------|----
-/bin|Common programs, shared by the system
+/bin|**Common programs**, shared by the system
+/sbin|**Programs for use by the system** and the system administrator
 /dev|Contains references to all the CPU peripheral hardware
-/etc|Most important system configuration files are in /etc
+/etc|Most important **system configuration files** are in /etc
 /home|Home directories of the common users
 /lib|Library files, includes files for all kinds of programs needed by the system and the users
 /mnt|Standard mount point for external file systems, e.g. a CD-ROM or a digital camera.
 /opt|Typically contains extra and third party software.
 /proc|A virtual file system containing information about system resources
-/sbin|Programs for use by the system and the system administrator
 /usr|Programs, libraries, documentation etc. for all user-related programs
 /var|Storage for all variable files and temporary files created by users, such as log files, the mail queue
 
@@ -442,7 +504,7 @@ tmpfs                   5.9M       1    5.9M    1% /dev/shm
 - BIOS
 	- check hardware
 	- select boot device
-	- load MBR (booting device first 512kb)
+	- load MBR (Master Boot Record) (booting device first 512kb)
 	- load bootloader
 - Bootloader
 - Kernel Init
@@ -478,9 +540,21 @@ serial stop/waiting
 ```
 
 ### ubuntu runlevel
-![](http://4.bp.blogspot.com/-beNcogRrk7s/VBbD7EPnMBI/AAAAAAAAAjk/QPBgVZegkTE/s1600/slrl.png)
+runlevel|Desc.|script
+--------|-----|------
+0|시스템 종료|/etc/rc0.d
+1,S,s|단일 사용자 모드|/etc/rc1.d, /etc/rcS.d
+2|그래피컬 다중 사용자 모드 + 네트워킹 **(기본)**|/etc/rc2.d
+3|2와동일|/etc/rc3.d
+4|2와동일|/etc/rc4.d
+5|2와동일|/etc/rc5.d
+6|시스템 재시작|/etc/rc6.d
+
 
 ### daemon
+
+데몬은 tty를 가지지 않고 background 프로그램은 가진다. 데몬은 보통 PPID 가 1번 즉 initd에 의해서 실행되는 경우가 많다. 슈퍼 데몬의 경우 다른 데몬을 관리하는 데몬을 일컫는다.
+
 #### init daemon
 - process 1
 ```bash
@@ -548,8 +622,15 @@ title CentOS (2.6.32-279.el6.x86_64)
 
 ## LDAP
 - LDAP (Lightweight Directory Access Protocol) is an application protocol for querying and modifying items in directory service providers like Active Directory, which supports a form of LDAP.
+- 참조와 검색이 많고 갱신이나 삭제가 그다지 빈번하지 않은 사용자 관리에 이용
+- 복수 서비스 인증을 통합하는 싱글 사인 온 에도 많이 사용
 
 ## Active Directory Service
 - Active Directory is a database based system that provides authentication, directory, policy, and other services in a# Network
 - Short answer: AD is a directory services database, and LDAP is one of the protocols you can use to talk to it.
----------------------------------------------------------------------------------------------------------
+
+
+## Reference Book
+* 우분투 리눅스 시스템 & 네트워크 (4.5/5)
+* 리눅스 시스템의 이해와 활용 (4/5)
+* Wikipedia
