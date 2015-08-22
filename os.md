@@ -84,6 +84,39 @@ iptables -A INPUT -i lo -j ACCEPT
 iptables -I INPUT 1 -p tcp --dport 22 -s 192.168.1.0/24 -j ACCEPT
 ```
 
+```
+**> iptables -L (ACCEPT)**
+Chain INPUT (policy ACCEPT)
+target     prot opt source               destination
+
+Chain FORWARD (policy ACCEPT)
+target     prot opt source               destination
+
+Chain OUTPUT (policy ACCEPT)
+target     prot opt source               destination
+
+**> iptables -L (DROP)**
+Chain INPUT (policy DROP)
+target     prot opt source               destination
+
+Chain FORWARD (policy DROP)
+target     prot opt source               destination
+
+Chain OUTPUT (policy DROP)
+target     prot opt source               destination
+
+**> iptables -L (80 port DROP)**
+Chain INPUT (policy ACCEPT)
+target     prot opt source               destination
+REJECT     tcp  --  0.0.0.0/0            0.0.0.0/0      tcp dpt:80
+
+Chain FORWARD (policy ACCEPT)
+target     prot opt source               destination
+
+Chain OUTPUT (policy ACCEPT)
+target     prot opt source               destination
+```
+
 https://www.frozentux.net/iptables-tutorial/iptables-tutorial.html
 
 ### at

@@ -15,7 +15,7 @@ Layer|Name|
 
 ---------------------------------------------------------------------------------------------------------
 ## 1. Physical Layer
-- physical connection between devices:  a cable or a radio signal
+- physical connection between devices:  a cable or a radio signal 
 - **Ethernet**
 
 ---------------------------------------------------------------------------------------------------------
@@ -215,10 +215,11 @@ It is not goot to have each DHCP server in every VLAN, so relay agent (usually L
 DNS is domain name system, that is a distributed naming system for resource connected to the Internet or a private network. usually domain name system maps domain name to IP. it dynamically writes the host name in IP address into DNS table. Related files are /etc/host.conf, /etc/hosts. Remeber that DNS resolver ask DNS server with socket library instead of client application.
 ![](https://upload.wikimedia.org/wikipedia/commons/thumb/b/b1/Domain_name_space.svg/1200px-Domain_name_space.svg.png)
 
-#### DNS type
-- MX
-- A
-- CNAME
+#### DNS Record type
+- MX (Mail Exchange)
+- A (Hostname to IP)
+- CNAME (www.example.com to example.com)
+- NS (Nameserver)
 - PTR
 
 #### Address resolution mechanism
@@ -354,6 +355,7 @@ http://www.quora.com/What-is-the-difference-between-TCP-and-UDP
 code|result
 ----|------
 1XX|informational
+101|Switching Protocols (HTTP version)
 2XX|Successful
 200|OK
 204|No Content
