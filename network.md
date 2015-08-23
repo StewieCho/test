@@ -32,13 +32,17 @@ Layer|Name|
 
 ### MAC Address
 - unique identifier assigned to network interface
-- MAC address has 48 bits (FF-FF-FF-FF-FF-FF)
+- MAC address has 48 bits (8*6) (FF-FF-FF-FF-FF-FF)
 - menufacturer no (3 bytes) + host identifier (3 bytes)
 
 ### Data link frame
 |Preamble|Target MAC address|Source MAC address|type|Data|FCS|
 |--------|------------------|------------------|----|----|---|
 |8 byte|6 byte|6 byte|2 byte|46 ~ 1500 byte|4 byte|
+
+preamble = 지금부터 프레임을 보내요 라는 신호의 8바이트 배열
+Data 부분 중 실제 최대 길이가 MSS(Maximum Segment Size)
+MSS에서 IP header 및 TCP header 를 포함한 것이 MTU(Maximum Transmission Unit)
 
 ### ARP
 - address resolution protocol
@@ -77,7 +81,7 @@ Layer|Name|
 - **network address** : 192.168.1.1 (255.255.255.0) => 192.168.1.0
 - broadcast address (local broadcast address) : 192.168.1.1 (255.255.255.0) => 192.168.1.255 , is used to broadcast all node in same network
 - broadcast address (limited broadcast address) : 255.255.255.255 , is used to broadcast all node in same network if client does not know its own IP address (ex: DHCP)
-- loop-back address : 127.0.0.1/32 (1 octet is 127, rest of them do care)
+- loop-back address : 127.0.0.1/32 (1 octet is 127, rest of them do not care)
 - source, target MAC address in IP packet changes in every network
 - **IP**
 
@@ -98,7 +102,7 @@ all bits in host para is 1 means Broadcasting Address
 when looking for target in local network, if it is not there, then ask the default gateway to find target (maybe outside)
 
 ### Subnet Mask
-it tells what part of IP adress is the network identifier or device identifier. 
+it tells what part of IP adress is the network identifier or device identifier(or host). 
 ```
 class A subnet - 255.0.0.0
 class B subnet - 255.255.0.0
@@ -123,7 +127,7 @@ it stands for classless inter-domain routing. that is a method for allocating IP
 CIDR format|First Host|Last Host|Number of Hosts
 -----------|----------|---------|---------------
 192.168.0.1/24|192.168.0.1|192.168.0.254|254
-192.168.0.1/23|192.168.0.1|192.168.0.126|126
+192.168.0.1/25|192.168.0.1|192.168.0.126|126
 192.168.0.10/30|192.168.0.10|192.168.0.11|2
 10.0.0.0/8|10.0.0.1|10.255.255.254|16777214
 
@@ -155,6 +159,7 @@ transmitting MAC frame||PPPoE
 
 ### VPN
 VPN stands for vitual private network. it extends a private network address to a public network such as the Internet.
+
 - tons of routers are sitting on the internet. you go throught any number of router
 - virtual private networking allows you to connect target over the internet securily
 - set up the tunnel between source and target
@@ -167,18 +172,11 @@ VPN stands for vitual private network. it extends a private network address to a
 
 ### IPSEC
 IPSEC is internet protocol security. that is a protocol suite for securing IP communication by authenticating and encrypting each IP packet of a communication session.
+
 - ip network encryption protocol
 - sa : security association
 - **transport mode** encrypt all
 - **tunnel mode** encrypt IP Packet's data section
-
----------------------------------------------------------------------------------------------------------
-## 4. Transport Layer
-- data unit : **segment**
-- use **port** to know about application process
-- this layer provides transparent transfer of data between end systems, or hosts
-- is responsible for end-to-end error recovery and flow control
-- **TCP, UDP**
 
 ### NAT
 Network address translation is a methodology of remapping one internal IP address into external IP address by modifying network address information in IP datagram.
@@ -190,6 +188,7 @@ Network address translation is a methodology of remapping one internal IP addres
 - pooled mode, static mode
 - default gateway is usually router which has NAT built into it
 
+
 ### DHCP
 dynamic host configuration protocol is a network protocol to dynamically assign the ip address to the client computer or network devices. DHCP server will provide certain TCP/IP information. **/etc/dhcpd.conf**
 
@@ -200,20 +199,21 @@ dynamic host configuration protocol is a network protocol to dynamically assign 
 - **DHCP ack** : When the DHCP server receives the DHCPREQUEST message from the client, DHCP server sends a DHCPACK packet includes the lease duration and any other configuration information that the client might have requested
 
 #### 3 key information
-- Ip address
-	- this is given dynamically
-	- scope (Ex 192.168.1.100 ~ 192.168.1.200)
+- Ip address (dynamic)
 - subnet masking (static)
-- default gateway (static) (can talk outside of network)
+- default gateway (static)
 
 
 #### Relay agent
-It is not goot to have each DHCP server in every VLAN, so relay agent (usually L3 switch or router) send DHCP discovery to DHCP server in different VLAN instead.
+It is not goot to have each DHCP servers in every VLAN, so relay agent (usually L3 switch or router) send DHCP discovery to DHCP server in different VLAN instead.
 
 
 ### DNS
 DNS is domain name system, that is a distributed naming system for resource connected to the Internet or a private network. usually domain name system maps domain name to IP. it dynamically writes the host name in IP address into DNS table. Related files are /etc/host.conf, /etc/hosts. Remeber that DNS resolver ask DNS server with socket library instead of client application.
+
+![](https://i-technet.sec.s-msft.com/dynimg/IC195944.gif)
 ![](https://upload.wikimedia.org/wikipedia/commons/thumb/b/b1/Domain_name_space.svg/1200px-Domain_name_space.svg.png)
+
 
 #### DNS Record type
 - MX (Mail Exchange)
@@ -229,6 +229,7 @@ DNS is domain name system, that is a distributed naming system for resource conn
 #### reverse DNS
 opposite. maps ip adress to domain name
 query to find the hostname
+by telnet server
 
 #### Simply speaking
 your computer doesn't understand what amazon.com is. so when you put amazon.com, at first that will go to your local dns server. If it doesn't know, your local dns server also has dns server information. so, at First look up in your dns server, and then primary dns server, finally the secondary dns server
@@ -242,6 +243,15 @@ that will go query. if you get IP address, then try to connect cnn.com, then cnn
 - then, DNS server asks the TLD(top-level domain) nameservers
 - and retrieve the record then receive the answer.
 
+
+
+---------------------------------------------------------------------------------------------------------
+## 4. Transport Layer
+- data unit : **segment**
+- use **port** to know about application process
+- this layer provides transparent transfer of data between end systems, or hosts
+- is responsible for end-to-end error recovery and flow control
+- **TCP, UDP**
 
 
 ### TCP/IP network model
@@ -312,8 +322,8 @@ Port|Apps
 http://www.quora.com/What-is-the-difference-between-TCP-and-UDP
 
 #### MSS, MTU
-- MSS : Maximum Segment Size (TCP)
-- MTU : Maximum Transmission Unit (Digital Data length)
+- MSS : Maximum Segment Size (TCP), data size in application layer
+- MTU : Maximum Transmission Unit (Digital Data length), data size in network layer
 	- usually TCP header + IP header is 40 bytes, so that MTU - 40 bytes = MSS
 
 ---------------------------------------------------------------------------------------------------------
