@@ -1,5 +1,6 @@
 Web development memo
 ====================
+![License](https://img.shields.io/github/license/stewiecho/test.svg)
 
 - sublime text
   - package
